@@ -1,0 +1,16 @@
+PODS:
+  - Alamofire (1.2.3)
+  - CLIKit (0.1.1)
+  - PrettyColors (2.0.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - CLIKit
+  - PrettyColors
+
+SPEC CHECKSUMS:
+  Alamofire: 5550bf0b575ed1a4bf9be572f9463e1015cc169e
+  CLIKit: 855d2ef01f5def7f9ff4acb804896e4d88e16662
+  PrettyColors: 339615276e92027bb7cd2504685951f14b5feaf6
+
+COCOAPODS: 0.38.0
