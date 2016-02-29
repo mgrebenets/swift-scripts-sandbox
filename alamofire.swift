@@ -3,37 +3,46 @@
 import Alamofire
 import Foundation
 
-let url = NSURL(string: "http://httpbin.org/get")!
-let data = NSData(contentsOfURL: url)!
-// print(data)
-let json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: nil) as? Dictionary<String, AnyObject>
-// print(json)
+/// Helper for running Swift scripts with async callbacks
+public class ScriptRunner {
+	/// A poor man's mutex
+	private var count = 0
+	/// Current run loop
+	private let runLoop = NSRunLoop.currentRunLoop()
 
-// print("Try session")
-// let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: NSOperationQueue())
-// let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-// let session = NSURLSession()
-// let task = session.dataTaskWithURL(url) { data, response, error in
-//     print(data)
-// }
-// print("resume")
-// task.resume()
+	/// Lock the script
+	public func lock() {
+		count++
+	}
 
-// let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("com.example.app.background")
-// let manager = Alamofire.Manager(configuration: configuration)
+	/// Unlock the script
+	public func unlock() {
+		count--
+	}
 
-var shouldFinishRunning = false
+	/// Wait for all locks to unlock
+	public func wait() {
+		while count > 0 &&
+		    runLoop.runMode(NSDefaultRunLoopMode, beforeDate: NSDate(timeIntervalSinceNow: 0.1)) {
+		    // Run, run, run
+		}
+	}
+}
+
+var runner = ScriptRunner()
+runner.lock()
 
 Alamofire.request(.GET, "http://httpbin.org/get")
 	.responseJSON { (_, _, JSON, _) in
-		print(JSON)
-		shouldFinishRunning = true
+		print(JSON, separator: "\n")
+		runner.unlock()
 	}
 
-let runLoop = NSRunLoop.currentRunLoop()
-while shouldFinishRunning == false &&
-    runLoop.runMode(NSDefaultRunLoopMode, beforeDate: NSDate(timeIntervalSinceNow: 0.1)) {
-    // Run, run, run
-}
+runner.wait()
+// let runLoop = NSRunLoop.currentRunLoop()
+// while shouldFinishRunning == false &&
+//     runLoop.runMode(NSDefaultRunLoopMode, beforeDate: NSDate(timeIntervalSinceNow: 0.1)) {
+//     // Run, run, run
+// }
 // dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-print("EOF")
+print("EOF", separator: "\n")

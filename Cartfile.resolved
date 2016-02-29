@@ -1,1 +1,2 @@
-github "JustHTTP/Just" "e5ed5a9928d2dc8108e048eb7110ce234840fd44"
+github "Alamofire/Alamofire" "2beb1e3b6ca9349badcd9cbba1a7efad8bc43c89"
+github "mgrebenets/SwiftScriptRunner" "0.1.0"

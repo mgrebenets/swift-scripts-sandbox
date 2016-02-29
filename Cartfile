@@ -1,2 +1,6 @@
 
-github "JustHTTP/Just" "master"
+#github "JustHTTP/Just" "master"
+
+github "Alamofire/Alamofire" "master"
+#git "/Users/maksymgrebenets/Projects/i4napps/SwiftScriptRunner" "master"
+github "mgrebenets/SwiftScriptRunner"
